@@ -118,7 +118,7 @@ func handleMetaStream(ctx context.Context, conn quic.Connection) error {
 	switch metadata.Operation {
 	case 1: // Upload
 		log.Printf("Preparing to handle upload for file: %s", metadata.FileName)
-		if err := utils.HandleFileUpload(ctx, conn, metadata); err != nil {
+		if err := utils.HandleFileUploadParallel(ctx, conn, metadata); err != nil {
 			return fmt.Errorf("handleFileUpload failed: %w", err)
 		}
 	case 2: // Download
