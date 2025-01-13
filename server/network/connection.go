@@ -49,8 +49,8 @@ func StartQuicServer(addr string, ctx context.Context, tlsConfig *tls.Config, qu
 				<-sem
 			}()
 
-			// We can optionally wrap the entire connection in a big context for
-			// a maximum operation time (e.g., 2 hours) if desired:
+			// optionally wrap the entire connection in a big context for
+			// a maximum operation time (e.g., 2 hours) if desired...
 			connCtx, cancel := context.WithTimeout(context.Background(), 2*time.Hour)
 			defer cancel()
 
