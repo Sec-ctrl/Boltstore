@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/binary"
+	"fmt"
 	"io"
 )
 
@@ -24,8 +25,11 @@ func EncodeChunkHeader(w io.Writer, header ChunkHeader) error {
 func DecodeChunkHeader(r io.Reader) (ChunkHeader, error) {
 	var header ChunkHeader
 	var buf [16]byte
+	if header.ChunkSize == 0 {
+		return header, fmt.Errorf("invalid chunk: size cannot be 0")
+	}
 	if _, err := io.ReadFull(r, buf[:]); err != nil {
-		return header, err
+		return header, fmt.Errorf("failed to decode chunk header: %w", err)
 	}
 	header.Offset = binary.LittleEndian.Uint64(buf[0:8])
 	header.ChunkSize = binary.LittleEndian.Uint64(buf[8:16])
